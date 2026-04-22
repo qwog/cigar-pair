@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Pairing Room — Cigars & Spirits</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --cream: #F5F0E8;
+  --warm-white: #FAF8F3;
+  --tobacco: #5C3D1E;
+  --amber: #C17F2A;
+  --amber-light: #E8A84A;
+  --charcoal: #1C1410;
+  --dark-brown: #2E1B0E;
+  --mid-brown: #7A5230;
+  --smoke: #8B7355;
+  --border: rgba(92,61,30,0.18);
+  --border-light: rgba(92,61,30,0.1);
+  --font-serif: 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Jost', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--charcoal);
+  color: var(--cream);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── TEXTURE OVERLAY ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.6;
+}
+
+/* ── HERO ── */
+.hero {
+  position: relative;
+  text-align: center;
+  padding: 80px 24px 60px;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+}
+
+.hero-eyebrow {
+  font-family: var(--font-sans);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  margin-bottom: 6px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.35s;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--amber-light);
+}
+
+.hero-subtitle {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: clamp(16px, 2.5vw, 22px);
+  color: var(--smoke);
+  margin-top: 16px;
+  opacity: 0;
+  animation: fadeUp 0.9s ease forwards 0.5s;
+}
+
+.hero-ornament {
+  margin: 28px auto 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.65s;
+}
+
+.ornament-line {
+  width: 60px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber));
+}
+
+.ornament-line.right {
+  background: linear-gradient(90deg, var(--amber), transparent);
+}
+
+.ornament-diamond {
+  width: 6px;
+  height: 6px;
+  background: var(--amber);
+  transform: rotate(45deg);
+}
+
+/* ── MAIN LAYOUT ── */
+.main {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ── MODE TABS ── */
+.mode-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 48px;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+
+.tab-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 14px 32px;
+  background: transparent;
+  border: none;
+  color: var(--smoke);
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.tab-btn + .tab-btn::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--border);
+}
+
+.tab-btn.active {
+  background: var(--tobacco);
+  color: var(--cream);
+}
+
+.tab-btn:hover:not(.active) {
+  color: var(--cream);
+  background: rgba(92,61,30,0.3);
+}
+
+/* ── SELECTOR GRID ── */
+.selector-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 32px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1s;
+}
+
+@media (max-width: 700px) {
+  .selector-grid { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px;
+  transition: border-color 0.2s;
+}
+
+.panel:hover {
+  border-color: rgba(193,127,42,0.3);
+}
+
+.panel-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.panel-icon {
+  font-size: 18px;
+}
+
+.panel-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--cream);
+  letter-spacing: 0.02em;
+}
+
+.panel-count {
+  font-size: 11px;
+  color: var(--smoke);
+  letter-spacing: 0.08em;
+  margin-left: auto;
+}
+
+.filter-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filter-row input,
+.filter-row select,
+.filter-row-single input,
+.filter-row-single select {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  color: var(--cream);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  padding: 9px 12px;
+  width: 100%;
+  outline: none;
+  transition: border-color 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.filter-row input::placeholder { color: var(--smoke); }
+
+.filter-row input:focus,
+.filter-row select:focus,
+.filter-row-single input:focus,
+.filter-row-single select:focus {
+  border-color: var(--amber);
+}
+
+.filter-row select option,
+.filter-row-single select option {
+  background: var(--dark-brown);
+  color: var(--cream);
+}
+
+.item-list {
+  height: 240px;
+  overflow-y: auto;
+  border: 1px solid var(--border-light);
+  border-radius: 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--tobacco) transparent;
+  margin-bottom: 12px;
+}
+
+.item-list::-webkit-scrollbar { width: 4px; }
+.item-list::-webkit-scrollbar-track { background: transparent; }
+.item-list::-webkit-scrollbar-thumb { background: var(--tobacco); border-radius: 2px; }
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-light);
+  cursor: pointer;
+  transition: background 0.15s;
+  gap: 8px;
+}
+
+.list-item:last-child { border-bottom: none; }
+
+.list-item:hover {
+  background: rgba(193,127,42,0.08);
+}
+
+.list-item.selected {
+  background: rgba(193,127,42,0.15);
+  border-left: 2px solid var(--amber);
+}
+
+.list-item-name {
+  font-size: 13px;
+  color: var(--cream);
+  line-height: 1.3;
+  flex: 1;
+}
+
+.list-item.selected .list-item-name {
+  color: var(--amber-light);
+}
+
+.strength-tag {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  padding: 2px 8px;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  text-transform: uppercase;
+}
+
+.tag-mild    { background: rgba(90,140,60,0.2);  color: #8DC46A; }
+.tag-mild-medium { background: rgba(150,180,60,0.2); color: #B8D46A; }
+.tag-medium  { background: rgba(193,127,42,0.2); color: var(--amber-light); }
+.tag-medium-full { background: rgba(180,80,40,0.2); color: #E07A50; }
+.tag-full    { background: rgba(180,40,30,0.2);  color: #E06050; }
+.tag-type    { background: rgba(92,61,30,0.3);   color: var(--cream); }
+
+.selected-chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(193,127,42,0.1);
+  border: 1px solid rgba(193,127,42,0.3);
+  border-radius: 2px;
+  padding: 10px 14px;
+  min-height: 50px;
+  transition: all 0.2s;
+}
+
+.chip-icon { font-size: 18px; flex-shrink: 0; }
+
+.chip-name {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--cream);
+  line-height: 1.2;
+}
+
+.chip-sub {
+  font-size: 11px;
+  color: var(--smoke);
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+.chip-empty .chip-name {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-style: italic;
+  color: var(--smoke);
+}
+
+/* ── CTA ── */
+.cta-row {
+  text-align: center;
+  margin-bottom: 40px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1.1s;
+}
+
+.pair-btn {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  padding: 18px 56px;
+  background: var(--amber);
+  color: var(--charcoal);
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  border-radius: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.pair-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background 0.2s;
+}
+
+.pair-btn:hover:not(:disabled)::before {
+  background: rgba(255,255,255,0.12);
+}
+
+.pair-btn:disabled {
+  background: rgba(193,127,42,0.3);
+  color: var(--smoke);
+  cursor: not-allowed;
+}
+
+/* ── RESULT ── */
+.result-section {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.result-section.visible {
+  display: block;
+  animation: revealResult 0.6s ease forwards;
+}
+
+@keyframes revealResult {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.result-header-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 28px 32px;
+  background: rgba(193,127,42,0.08);
+  border: 1px solid rgba(193,127,42,0.25);
+  border-radius: 2px;
+  margin-bottom: 20px;
+}
+
+.result-icon-wrap {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(193,127,42,0.15);
+  border: 1px solid rgba(193,127,42,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  flex-shrink: 0;
+}
+
+.result-headline {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--cream);
+  line-height: 1.1;
+}
+
+.result-subtitle {
+  font-size: 12px;
+  color: var(--smoke);
+  margin-top: 4px;
+  letter-spacing: 0.06em;
+}
+
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.result-tag {
+  font-size: 11px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(193,127,42,0.3);
+  background: rgba(193,127,42,0.1);
+  color: var(--amber-light);
+}
+
+.result-tag.match-excellent { background: rgba(60,160,80,0.15); border-color: rgba(60,160,80,0.4); color: #7DD890; }
+.result-tag.match-good      { background: rgba(193,127,42,0.15); border-color: rgba(193,127,42,0.4); color: var(--amber-light); }
+.result-tag.match-fair      { background: rgba(180,80,40,0.15); border-color: rgba(180,80,40,0.4); color: #E07A50; }
+.result-tag.match-adventurous { background: rgba(100,60,180,0.15); border-color: rgba(100,60,180,0.4); color: #AA88EE; }
+
+.pairings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.pairing-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 18px;
+  transition: border-color 0.2s, background 0.2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.pairing-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 0;
+  background: var(--amber);
+  transition: height 0.3s ease;
+}
+
+.pairing-card:hover {
+  border-color: rgba(193,127,42,0.3);
+  background: rgba(193,127,42,0.05);
+}
+
+.pairing-card:hover::before { height: 100%; }
+
+.pairing-card-name {
+  font-family: var(--font-serif);
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--cream);
+  margin-bottom: 8px;
+  line-height: 1.2;
+}
+
+.pairing-card-why {
+  font-size: 12px;
+  color: var(--smoke);
+  line-height: 1.6;
+}
+
+.tasting-notes {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 24px 28px;
+  position: relative;
+}
+
+.tasting-notes-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--amber);
+  margin-bottom: 12px;
+}
+
+.tasting-notes-text {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-style: italic;
+  color: var(--cream);
+  line-height: 1.7;
+}
+
+.tasting-notes::before {
+  content: '"';
+  position: absolute;
+  top: 12px;
+  right: 24px;
+  font-family: var(--font-serif);
+  font-size: 80px;
+  color: rgba(193,127,42,0.08);
+  line-height: 1;
+  pointer-events: none;
+}
+
+/* ── LOADING ── */
+.loading-bar {
+  display: none;
+  text-align: center;
+  padding: 40px 0;
+}
+
+.loading-bar.show { display: block; }
+
+.loading-text {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 18px;
+  color: var(--smoke);
+  margin-bottom: 20px;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(193,127,42,0.2);
+  border-top-color: var(--amber);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+/* ── FOOTER ── */
+.footer {
+  text-align: center;
+  padding: 32px 24px;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+
+.footer-text {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--smoke);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="hero-eyebrow">AI-Powered Sommelier</p>
+  <h1 class="hero-title">The Pairing <em>Room</em></h1>
+  <p class="hero-subtitle">Cigars &amp; Spirits — perfectly matched</p>
+  <div class="hero-ornament">
+    <div class="ornament-line"></div>
+    <div class="ornament-diamond"></div>
+    <div class="ornament-line right"></div>
+  </div>
+</header>
+
+<main class="main">
+
+  <div class="mode-bar">
+    <button class="tab-btn active" onclick="setMode('cigar')">🚬 &nbsp;I have a cigar</button>
+    <button class="tab-btn" onclick="setMode('spirit')">🥃 &nbsp;I have a spirit</button>
+    <button class="tab-btn" onclick="setMode('both')">✦ &nbsp;Rate my pairing</button>
+  </div>
+
+  <div class="selector-grid" id="selector-grid">
+    <!-- Cigar Panel -->
+    <div class="panel" id="cigar-panel">
+      <div class="panel-header">
+        <span class="panel-icon">🚬</span>
+        <span class="panel-title">Select a Cigar</span>
+        <span class="panel-count" id="cigar-count">45 cigars</span>
+      </div>
+      <div class="filter-row">
+        <input type="text" id="cigar-search" placeholder="Search cigars..." oninput="filterList('cigar')">
+        <select id="cigar-filter" onchange="filterList('cigar')">
+          <option value="">All strengths</option>
+          <option value="Mild">Mild</option>
+          <option value="Mild-Medium">Mild-Medium</option>
+          <option value="Medium">Medium</option>
+          <option value="Medium-Full">Medium-Full</option>
+          <option value="Full">Full</option>
+        </select>
+      </div>
+      <div class="item-list" id="cigar-list"></div>
+      <div class="selected-chip chip-empty" id="cigar-chip">
+        <span class="chip-icon">🚬</span>
+        <div><div class="chip-name">No cigar selected</div></div>
+      </div>
+    </div>
+
+    <!-- Spirit Panel -->
+    <div class="panel" id="spirit-panel">
+      <div class="panel-header">
+        <span class="panel-icon">🥃</span>
+        <span class="panel-title">Select a Spirit</span>
+        <span class="panel-count" id="spirit-count">70 spirits</span>
+      </div>
+      <div class="filter-row">
+        <input type="text" id="spirit-search" placeholder="Search spirits..." oninput="filterList('spirit')">
+        <select id="spirit-filter" onchange="filterList('spirit')">
+          <option value="">All types</option>
+          <option value="Bourbon">Bourbon</option>
+          <option value="Scotch">Scotch</option>
+          <option value="Irish">Irish Whiskey</option>
+          <option value="Rye">Rye Whiskey</option>
+          <option value="Japanese">Japanese Whisky</option>
+          <option value="Tennessee">Tennessee Whiskey</option>
+          <option value="Rum">Rum</option>
+          <option value="Cognac">Cognac</option>
+          <option value="Tequila">Tequila</option>
+          <option value="Gin">Gin</option>
+          <option value="Wine">Wine</option>
+          <option value="Beer">Beer</option>
+          <option value="Brandy">Brandy</option>
+        </select>
+      </div>
+      <div class="item-list" id="spirit-list"></div>
+      <div class="selected-chip chip-empty" id="spirit-chip">
+        <span class="chip-icon">🥃</span>
+        <div><div class="chip-name">No spirit selected</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="cta-row">
+    <button class="pair-btn" id="pair-btn" disabled onclick="getPairing()">Discover Your Pairing</button>
+  </div>
+
+  <div class="loading-bar" id="loading">
+    <p class="loading-text">Consulting the cellar&hellip;</p>
+    <div class="spinner"></div>
+  </div>
+
+  <div class="result-section" id="result-section">
+    <div class="result-header-bar">
+      <div class="result-icon-wrap" id="result-icon">🤝</div>
+      <div>
+        <div class="result-headline" id="result-headline">Your Pairing</div>
+        <div class="result-subtitle" id="result-subtitle"></div>
+      </div>
+    </div>
+    <div class="tags-row" id="tags-row"></div>
+    <div class="pairings-grid" id="pairings-grid"></div>
+    <div class="tasting-notes">
+      <div class="tasting-notes-label">Tasting Experience</div>
+      <div class="tasting-notes-text" id="tasting-text"></div>
+    </div>
+  </div>
+
+</main>
+
+<footer class="footer">
+  <p class="footer-text">The Pairing Room &nbsp;·&nbsp; AI-Powered Cigar &amp; Spirits Guide &nbsp;·&nbsp; For connoisseurs</p>
+</footer>
+
+<script>
+const CIGARS = [
+  {name:"Arturo Fuente Opus X",strength:"Full",origin:"Dominican Republic",wrapper:"Cameroon",notes:"Rich cedar, spice, dark fruit"},
+  {name:"Arturo Fuente Hemingway",strength:"Medium",origin:"Dominican Republic",wrapper:"Cameroon",notes:"Coffee, cream, nuts"},
+  {name:"Arturo Fuente Don Carlos",strength:"Full",origin:"Dominican Republic",wrapper:"African Cameroon",notes:"Leather, earth, chocolate"},
+  {name:"Padrón 1964 Anniversary",strength:"Full",origin:"Nicaragua",wrapper:"Maduro",notes:"Cocoa, earth, spice, leather"},
+  {name:"Padrón 1926 Serie",strength:"Full",origin:"Nicaragua",wrapper:"Natural/Maduro",notes:"Deep earth, dark chocolate, pepper"},
+  {name:"Padrón 2000",strength:"Medium-Full",origin:"Nicaragua",wrapper:"Natural",notes:"Cedar, spice, coffee"},
+  {name:"Cohiba Behike",strength:"Full",origin:"Cuba",wrapper:"Cuban",notes:"Creamy, cedar, earthy, complex"},
+  {name:"Cohiba Robustos",strength:"Medium-Full",origin:"Cuba",wrapper:"Cuban",notes:"Tobacco, cedar, mild spice"},
+  {name:"Cohiba Siglo VI",strength:"Medium-Full",origin:"Cuba",wrapper:"Cuban",notes:"Floral, nutty, sweet"},
+  {name:"Montecristo No. 2",strength:"Medium",origin:"Cuba",wrapper:"Cuban",notes:"Nutty, woody, creamy"},
+  {name:"Montecristo White",strength:"Mild-Medium",origin:"Dominican Republic",wrapper:"Connecticut",notes:"Smooth, creamy, light pepper"},
+  {name:"Oliva Serie V Melanio",strength:"Full",origin:"Nicaragua",wrapper:"Sumatra",notes:"Espresso, dark chocolate, earth"},
+  {name:"Oliva Serie G",strength:"Medium",origin:"Nicaragua",wrapper:"Ecuadorian Sumatra",notes:"Coffee, cocoa, cedar"},
+  {name:"Davidoff Aniversario",strength:"Mild-Medium",origin:"Dominican Republic",wrapper:"Ecuador",notes:"Creamy, nutty, light spice"},
+  {name:"Davidoff Grand Cru",strength:"Mild",origin:"Dominican Republic",wrapper:"Connecticut",notes:"Smooth, subtle, floral, hay"},
+  {name:"Rocky Patel Vintage 1990",strength:"Medium-Full",origin:"Honduras/Nicaragua",wrapper:"Connecticut Broadleaf",notes:"Earth, leather, coffee"},
+  {name:"Rocky Patel Fifties",strength:"Medium",origin:"Honduras",wrapper:"Ecuadorian",notes:"Cocoa, coffee, mild spice"},
+  {name:"My Father Le Bijou 1922",strength:"Full",origin:"Nicaragua",wrapper:"San Andres Maduro",notes:"Dark chocolate, pepper, leather"},
+  {name:"La Flor Dominicana Double Ligero",strength:"Full",origin:"Dominican Republic",wrapper:"Natural",notes:"Strong pepper, cocoa, earth"},
+  {name:"Romeo y Julieta 1875",strength:"Mild-Medium",origin:"Honduras",wrapper:"Ecuador",notes:"Cedar, floral, cream"},
+  {name:"Romeo y Julieta Reserva Real",strength:"Medium",origin:"Dominican Republic",wrapper:"Ecuador",notes:"Nutty, cedar, light spice"},
+  {name:"Macanudo Café",strength:"Mild",origin:"Jamaica/Dominican",wrapper:"Connecticut",notes:"Creamy, mild tobacco, light"},
+  {name:"Macanudo Maduro",strength:"Mild-Medium",origin:"Dominican Republic",wrapper:"Mexican Maduro",notes:"Smooth cocoa, mild sweet"},
+  {name:"Ashton VSG",strength:"Full",origin:"Dominican Republic",wrapper:"Sumatra",notes:"Spice, pepper, earth, oak"},
+  {name:"Ashton Cabinet",strength:"Mild",origin:"Dominican Republic",wrapper:"Ecuador Connecticut",notes:"Creamy, sweet, light"},
+  {name:"H. Upmann No. 2",strength:"Medium",origin:"Cuba",wrapper:"Cuban",notes:"Nutty, cedar, mild earth"},
+  {name:"Alec Bradley Black Market",strength:"Full",origin:"Honduras",wrapper:"Honduran",notes:"Coffee, earth, pepper, complexity"},
+  {name:"Camacho Triple Maduro",strength:"Full",origin:"Honduras",wrapper:"Triple Maduro",notes:"Bold chocolate, dark fruit, pepper"},
+  {name:"CAO Flathead",strength:"Full",origin:"Nicaragua/Honduras",wrapper:"Brazilian",notes:"Earthy, bold, complex, rugged"},
+  {name:"Liga Privada No. 9",strength:"Full",origin:"Nicaragua/Multiple",wrapper:"Connecticut Broadleaf",notes:"Dark fruit, chocolate, espresso"},
+  {name:"Drew Estate Undercrown",strength:"Medium-Full",origin:"Nicaragua",wrapper:"Habano",notes:"Coffee, cedar, spice"},
+  {name:"Gurkha His Majesty's Reserve",strength:"Full",origin:"Dominican Republic",wrapper:"Cameroon",notes:"Rare earth, complex, leather"},
+  {name:"Plasencia Alma Fuerte",strength:"Full",origin:"Nicaragua",wrapper:"Nicaraguan",notes:"Chocolate, earth, full pepper"},
+  {name:"E.P. Carrillo Core Plus",strength:"Medium-Full",origin:"Dominican Republic",wrapper:"Ecuador",notes:"Sweet cedar, earth, spice"},
+  {name:"Perdomo Champagne",strength:"Mild",origin:"Nicaragua",wrapper:"Connecticut",notes:"Light, smooth, creamy, sweet notes"},
+  {name:"Perdomo Reserve 10th Anniversary",strength:"Medium",origin:"Nicaragua",wrapper:"Maduro",notes:"Toasty, cocoa, earth"},
+  {name:"Punch Gran Puro",strength:"Full",origin:"Honduras",wrapper:"Honduran",notes:"Earthy, leather, pepper"},
+  {name:"Hoyo de Monterrey Excalibur",strength:"Mild-Medium",origin:"Honduras",wrapper:"Ecuadorian",notes:"Creamy, nutty, mild wood"},
+  {name:"Partagás Serie D No. 4",strength:"Full",origin:"Cuba",wrapper:"Cuban",notes:"Earthy, leather, pepper, tobacco"},
+  {name:"Bolivar Belicosos Finos",strength:"Full",origin:"Cuba",wrapper:"Cuban",notes:"Bold earth, tobacco, pepper"},
+  {name:"San Cristobal Elegancia",strength:"Medium-Full",origin:"Nicaragua",wrapper:"Habano",notes:"Cedar, spice, dark fruit"},
+  {name:"Aging Room Quattro Nicaragua",strength:"Medium",origin:"Nicaragua",wrapper:"Ecuadorian Sun Grown",notes:"Coffee, vanilla, cedar"},
+  {name:"ACID Kuba Kuba",strength:"Mild",origin:"Nicaragua",wrapper:"Sumatra",notes:"Infused herbs, sweet, unique"},
+  {name:"Nub 460",strength:"Medium",origin:"Nicaragua",wrapper:"Connecticut",notes:"Creamy, mild spice, cedar"},
+  {name:"La Gloria Cubana Serie R",strength:"Full",origin:"Dominican Republic",wrapper:"Maduro",notes:"Earth, cocoa, pepper"},
+];
+
+const SPIRITS = [
+  {name:"Buffalo Trace",type:"Bourbon",region:"Kentucky",notes:"Vanilla, caramel, toffee, oak"},
+  {name:"Pappy Van Winkle 23yr",type:"Bourbon",region:"Kentucky",notes:"Dark fruit, vanilla, leather, complex"},
+  {name:"Blanton's Original",type:"Bourbon",region:"Kentucky",notes:"Honey, orange peel, vanilla, spice"},
+  {name:"Woodford Reserve",type:"Bourbon",region:"Kentucky",notes:"Caramel, vanilla, chocolate, spice"},
+  {name:"Eagle Rare 17yr",type:"Bourbon",region:"Kentucky",notes:"Rich oak, dried fruit, leather"},
+  {name:"Four Roses Single Barrel",type:"Bourbon",region:"Kentucky",notes:"Fruity, floral, caramel, spice"},
+  {name:"Wild Turkey 101",type:"Bourbon",region:"Kentucky",notes:"Bold spice, vanilla, caramel"},
+  {name:"Elijah Craig Barrel Proof",type:"Bourbon",region:"Kentucky",notes:"Rich oak, chocolate, bold spice"},
+  {name:"Michter's US*1 Bourbon",type:"Bourbon",region:"Kentucky",notes:"Caramel, vanilla, toasted oak"},
+  {name:"Knob Creek 9yr",type:"Bourbon",region:"Kentucky",notes:"Oak, vanilla, light fruit"},
+  {name:"Maker's Mark",type:"Bourbon",region:"Kentucky",notes:"Smooth, fruity, wheat-forward sweetness"},
+  {name:"Booker's Bourbon",type:"Bourbon",region:"Kentucky",notes:"Bold, uncut, complex, wood-forward"},
+  {name:"Jim Beam Double Oak",type:"Bourbon",region:"Kentucky",notes:"Oak, vanilla, mild sweetness"},
+  {name:"Heaven's Door Double Barrel",type:"Bourbon",region:"Tennessee",notes:"Honey, spice, dried fruit"},
+  {name:"WhistlePig 10yr Rye",type:"Rye",region:"Vermont",notes:"Fruit, spice, mint, wood"},
+  {name:"Sazerac Rye",type:"Rye",region:"Kentucky",notes:"Spicy, herbal, anise, light fruit"},
+  {name:"Rittenhouse Rye",type:"Rye",region:"Kentucky",notes:"Spicy, earthy, mint, pepper"},
+  {name:"High West Double Rye",type:"Rye",region:"Utah",notes:"Spice, chocolate, anise, mint"},
+  {name:"Michter's US*1 Rye",type:"Rye",region:"Kentucky",notes:"Spice, herbal, light sweetness"},
+  {name:"Basil Hayden's Dark Rye",type:"Rye",region:"Kentucky",notes:"Dark fruit, spice, light body"},
+  {name:"Jack Daniel's Old No. 7",type:"Tennessee",region:"Tennessee",notes:"Charcoal-mellowed, vanilla, banana, light smoke"},
+  {name:"Jack Daniel's Single Barrel",type:"Tennessee",region:"Tennessee",notes:"Rich vanilla, oak, toasty"},
+  {name:"George Dickel No. 12",type:"Tennessee",region:"Tennessee",notes:"Smooth, vanilla, light fruit"},
+  {name:"Glenfiddich 18yr",type:"Scotch",region:"Speyside",notes:"Apple, pear, oak, toffee"},
+  {name:"Macallan 18yr Sherry",type:"Scotch",region:"Speyside",notes:"Rich dried fruit, spice, oak"},
+  {name:"Macallan 12yr Double Cask",type:"Scotch",region:"Speyside",notes:"Vanilla, caramel, citrus, ginger"},
+  {name:"Ardbeg 10yr",type:"Scotch",region:"Islay",notes:"Heavy peat, smoke, lemon, sea salt"},
+  {name:"Laphroaig 10yr",type:"Scotch",region:"Islay",notes:"Extreme peat, smoke, iodine, medicinal"},
+  {name:"Lagavulin 16yr",type:"Scotch",region:"Islay",notes:"Peat, smoke, seaweed, richness"},
+  {name:"Highland Park 12yr",type:"Scotch",region:"Orkney",notes:"Heather honey, smoke, dried fruit"},
+  {name:"Glenlivet 18yr",type:"Scotch",region:"Speyside",notes:"Floral, fruit, vanilla, clean"},
+  {name:"Dalmore 15yr",type:"Scotch",region:"Highland",notes:"Orange marmalade, chocolate, spice"},
+  {name:"Oban 14yr",type:"Scotch",region:"Highland",notes:"Maritime, fruit, light smoke, honey"},
+  {name:"GlenDronach 15yr",type:"Scotch",region:"Highland",notes:"Sherry, dark fruit, chocolate, nut"},
+  {name:"Balvenie DoubleWood 12yr",type:"Scotch",region:"Speyside",notes:"Honey, spice, vanilla, oak"},
+  {name:"Talisker 10yr",type:"Scotch",region:"Skye",notes:"Peppery, maritime, smoke, fruit"},
+  {name:"Jameson Original",type:"Irish",region:"Ireland",notes:"Light, smooth, triple-distilled, vanilla"},
+  {name:"Jameson 18yr",type:"Irish",region:"Ireland",notes:"Dried fruit, honey, toasted oak"},
+  {name:"Redbreast 12yr",type:"Irish",region:"Ireland",notes:"Orchard fruit, spice, honey"},
+  {name:"Redbreast 15yr",type:"Irish",region:"Ireland",notes:"Rich sherry, dried fruit, chocolate"},
+  {name:"Green Spot",type:"Irish",region:"Ireland",notes:"Fresh fruit, malt, light spice"},
+  {name:"Teeling Single Grain",type:"Irish",region:"Ireland",notes:"Sweet vanilla, tropical fruit, light"},
+  {name:"Hibiki Harmony",type:"Japanese",region:"Japan",notes:"Floral, honey, white peach, light oak"},
+  {name:"Yamazaki 12yr",type:"Japanese",region:"Japan",notes:"Plum, peach, toffee, ginger, oak"},
+  {name:"Nikka From the Barrel",type:"Japanese",region:"Japan",notes:"Bold, malt, honey, vanilla, spice"},
+  {name:"Hakushu 12yr",type:"Japanese",region:"Japan",notes:"Fresh, herbal, green apple, light smoke"},
+  {name:"Suntory Toki",type:"Japanese",region:"Japan",notes:"Light, citrus, fresh herb, honey"},
+  {name:"Bacardi Superior Rum",type:"Rum",region:"Puerto Rico",notes:"Light, dry, coconut, light vanilla"},
+  {name:"Diplomatico Reserva Exclusiva",type:"Rum",region:"Venezuela",notes:"Rich toffee, dried fruit, molasses, chocolate"},
+  {name:"Ron Zacapa 23yr",type:"Rum",region:"Guatemala",notes:"Banana, vanilla, honey, sweet oak"},
+  {name:"Appleton Estate 12yr",type:"Rum",region:"Jamaica",notes:"Tropical fruit, vanilla, molasses, oak"},
+  {name:"El Dorado 21yr",type:"Rum",region:"Guyana",notes:"Coconut, coffee, dark fruit, wood"},
+  {name:"Mount Gay XO",type:"Rum",region:"Barbados",notes:"Vanilla, dried fruit, caramel, oak"},
+  {name:"Remy Martin XO",type:"Cognac",region:"France",notes:"Plum, leather, chocolate, spice"},
+  {name:"Hennessy XO",type:"Cognac",region:"France",notes:"Dried fruit, flowers, chocolate, spice"},
+  {name:"Martell Cordon Bleu",type:"Cognac",region:"France",notes:"Plum jam, vanilla, oak, floral"},
+  {name:"Louis XIII",type:"Cognac",region:"France",notes:"Supreme dried fruit, leather, musk, spice"},
+  {name:"Courvoisier VSOP",type:"Cognac",region:"France",notes:"Butterscotch, dried fruit, vanilla"},
+  {name:"Remy Martin VSOP",type:"Cognac",region:"France",notes:"Ripe fruit, honey, light spice"},
+  {name:"Casamigos Reposado",type:"Tequila",region:"Mexico",notes:"Light agave, vanilla, light oak"},
+  {name:"Don Julio 1942",type:"Tequila",region:"Mexico",notes:"Caramel, vanilla, oak, agave"},
+  {name:"Patrón Extra Añejo",type:"Tequila",region:"Mexico",notes:"Agave, chocolate, vanilla, oak"},
+  {name:"Clase Azul Reposado",type:"Tequila",region:"Mexico",notes:"Caramel, honey, vanilla, light agave"},
+  {name:"Herradura Añejo",type:"Tequila",region:"Mexico",notes:"Toasted oak, agave, honey, spice"},
+  {name:"Tanqueray No. Ten Gin",type:"Gin",region:"UK",notes:"Floral citrus, juniper, light"},
+  {name:"Hendricks Gin",type:"Gin",region:"UK",notes:"Cucumber, rose, juniper"},
+  {name:"The Botanist Gin",type:"Gin",region:"Islay",notes:"Floral, herbal, light juniper"},
+  {name:"Barolo DOCG",type:"Wine",region:"Italy",notes:"Cherry, tar, roses, leather, tannin"},
+  {name:"Rioja Reserva",type:"Wine",region:"Spain",notes:"Dark fruit, vanilla, leather, oak"},
+  {name:"Amarone della Valpolicella",type:"Wine",region:"Italy",notes:"Dark fruit, chocolate, spice, rich"},
+  {name:"Vintage Port",type:"Wine",region:"Portugal",notes:"Dark fruit, chocolate, tannin, sweet"},
+  {name:"Guinness Extra Stout",type:"Beer",region:"Ireland",notes:"Roasted coffee, dark chocolate, cream"},
+  {name:"Sierra Nevada Bigfoot Barleywine",type:"Beer",region:"USA",notes:"Malt, caramel, hops, rich"},
+  {name:"Chimay Grande Réserve",type:"Beer",region:"Belgium",notes:"Dark fruit, spice, chocolate"},
+  {name:"Torres 20yr Brandy",type:"Brandy",region:"Spain",notes:"Dried fruit, vanilla, oak, complexity"},
+  {name:"Calvados Père Magloire XO",type:"Brandy",region:"France",notes:"Apple, pear, vanilla, woody"},
+];
+
+let selCigar = null, selSpirit = null, appMode = 'cigar';
+
+function setMode(m) {
+  appMode = m;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['cigar','spirit','both'][i] === m);
+  });
+  document.getElementById('result-section').classList.remove('visible');
+  updatePairBtn();
+}
+
+function strengthTagClass(s) {
+  const map = {'Mild':'tag-mild','Mild-Medium':'tag-mild-medium','Medium':'tag-medium','Medium-Full':'tag-medium-full','Full':'tag-full'};
+  return map[s] || 'tag-medium';
+}
+
+function renderList(type, items) {
+  const el = document.getElementById(type + '-list');
+  el.innerHTML = items.map(item => `
+    <div class="list-item" onclick="selectItem('${type}','${item.name.replace(/'/g,"\\'")}')">
+      <span class="list-item-name">${item.name}</span>
+      <span class="strength-tag ${type==='cigar'?strengthTagClass(item.strength):'tag-type'}">${type==='cigar'?item.strength:item.type}</span>
+    </div>`).join('');
+  document.getElementById(type + '-count').textContent = items.length + (type === 'cigar' ? ' cigars' : ' spirits');
+  highlightSelected(type);
+}
+
+function filterList(type) {
+  const q = document.getElementById(type + '-search').value.toLowerCase();
+  const cat = document.getElementById(type + '-filter').value;
+  const src = type === 'cigar' ? CIGARS : SPIRITS;
+  renderList(type, src.filter(i => {
+    const mQ = !q || i.name.toLowerCase().includes(q) || i.notes.toLowerCase().includes(q);
+    const mC = !cat || (type === 'cigar' ? i.strength === cat : i.type === cat);
+    return mQ && mC;
+  }));
+}
+
+function highlightSelected(type) {
+  const sel = type === 'cigar' ? selCigar : selSpirit;
+  document.querySelectorAll(`#${type}-list .list-item`).forEach(el => {
+    el.classList.toggle('selected', el.querySelector('.list-item-name')?.textContent === sel?.name);
+  });
+}
+
+function selectItem(type, name) {
+  const src = type === 'cigar' ? CIGARS : SPIRITS;
+  const item = src.find(i => i.name === name);
+  if (type === 'cigar') selCigar = item;
+  else selSpirit = item;
+
+  const chip = document.getElementById(type + '-chip');
+  chip.classList.remove('chip-empty');
+  chip.innerHTML = `
+    <span class="chip-icon">${type === 'cigar' ? '🚬' : '🥃'}</span>
+    <div>
+      <div class="chip-name">${item.name}</div>
+      <div class="chip-sub">${type === 'cigar' ? item.strength + ' &nbsp;·&nbsp; ' + item.origin : item.type + ' &nbsp;·&nbsp; ' + item.region}</div>
+    </div>`;
+
+  highlightSelected(type);
+  updatePairBtn();
+  document.getElementById('result-section').classList.remove('visible');
+}
+
+function updatePairBtn() {
+  const btn = document.getElementById('pair-btn');
+  if (appMode === 'both') btn.disabled = !(selCigar && selSpirit);
+  else if (appMode === 'cigar') btn.disabled = !selCigar;
+  else btn.disabled = !selSpirit;
+}
+
+async function getPairing() {
+  const loading = document.getElementById('loading');
+  const result = document.getElementById('result-section');
+
+  loading.classList.add('show');
+  result.classList.remove('visible');
+
+  let prompt = '';
+  if (selCigar && selSpirit) {
+    prompt = `Analyze this cigar and spirit pairing: ${selCigar.name} cigar (${selCigar.strength} body, ${selCigar.origin}, notes: ${selCigar.notes}) with ${selSpirit.name} (${selSpirit.type} from ${selSpirit.region}, notes: ${selSpirit.notes}). Return ONLY raw JSON (no markdown, no backticks): {"rating":"Excellent/Good/Fair/Adventurous","headline":"short compelling headline","tags":["tag1","tag2","tag3"],"alternatives":[{"name":"name","why":"reason under 15 words"},{"name":"name","why":"reason"},{"name":"name","why":"reason"}],"experience":"2-3 sentences on the tasting experience and flavor interactions"}`;
+  } else if (selCigar) {
+    prompt = `Suggest the best spirit pairings for: ${selCigar.name} cigar (${selCigar.strength} body, ${selCigar.origin}, notes: ${selCigar.notes}). Return ONLY raw JSON (no markdown, no backticks): {"headline":"short engaging title","tags":["tag1","tag2","tag3"],"alternatives":[{"name":"specific real spirit name","why":"reason under 15 words"},{"name":"name","why":"reason"},{"name":"name","why":"reason"},{"name":"name","why":"reason"},{"name":"name","why":"reason"}],"experience":"2-3 sentences on why these spirits complement this cigar"}`;
+  } else {
+    prompt = `Suggest the best cigar pairings for: ${selSpirit.name} (${selSpirit.type} from ${selSpirit.region}, notes: ${selSpirit.notes}). Return ONLY raw JSON (no markdown, no backticks): {"headline":"short engaging title","tags":["tag1","tag2","tag3"],"alternatives":[{"name":"specific real cigar name","why":"reason under 15 words"},{"name":"name","why":"reason"},{"name":"name","why":"reason"},{"name":"name","why":"reason"},{"name":"name","why":"reason"}],"experience":"2-3 sentences on why these cigars complement this spirit"}`;
+  }
+
+  try {
+    const resp = await fetch('/api/pairing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ prompt })
+    });
+    const data = await resp.json();
+    const text = (data.content || []).map(b => b.text || '').join('');
+    const clean = text.replace(/```json|```/g, '').trim();
+    const parsed = JSON.parse(clean);
+
+    loading.classList.remove('show');
+
+    document.getElementById('result-icon').textContent = (selCigar && selSpirit) ? '🤝' : selCigar ? '🥃' : '🚬';
+    document.getElementById('result-headline').textContent = parsed.headline || 'Your Pairing';
+    document.getElementById('result-subtitle').textContent = (selCigar && selSpirit)
+      ? `${selCigar.name}  ×  ${selSpirit.name}`
+      : selCigar ? `Recommended spirits for ${selCigar.name}` : `Recommended cigars for ${selSpirit.name}`;
+
+    const ratingMap = { Excellent: 'match-excellent', Good: 'match-good', Fair: 'match-fair', Adventurous: 'match-adventurous' };
+    const allTags = parsed.rating
+      ? [{ text: parsed.rating + ' match', cls: ratingMap[parsed.rating] || '' }, ...(parsed.tags || []).map(t => ({ text: t, cls: '' }))]
+      : (parsed.tags || []).map(t => ({ text: t, cls: '' }));
+
+    document.getElementById('tags-row').innerHTML = allTags.map(t =>
+      `<span class="result-tag ${t.cls}">${t.text}</span>`).join('');
+
+    document.getElementById('pairings-grid').innerHTML = (parsed.alternatives || []).map(a => `
+      <div class="pairing-card">
+        <div class="pairing-card-name">${a.name}</div>
+        <div class="pairing-card-why">${a.why}</div>
+      </div>`).join('');
+
+    document.getElementById('tasting-text').textContent = parsed.experience || '';
+    result.classList.add('visible');
+
+    setTimeout(() => result.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  } catch (err) {
+    loading.classList.remove('show');
+    document.getElementById('result-headline').textContent = 'Something went wrong';
+    document.getElementById('result-subtitle').textContent = 'Please try again';
+    document.getElementById('tags-row').innerHTML = '';
+    document.getElementById('pairings-grid').innerHTML = '';
+    document.getElementById('tasting-text').textContent = '';
+    result.classList.add('visible');
+  }
+}
+
+renderList('cigar', CIGARS);
+renderList('spirit', SPIRITS);
+</script>
+</body>
+</html>
