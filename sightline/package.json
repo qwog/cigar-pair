@@ -1,0 +1,34 @@
+{
+  "name": "sightline",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sightline - SaaS spend, seat and renewal intelligence",
+  "scripts": {
+    "dev": "next dev -p 3000",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "db:reset": "node --experimental-strip-types src/db/seed.mts",
+    "seed": "node --experimental-strip-types src/db/seed.mts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.10.0",
+    "drizzle-orm": "^0.44.2",
+    "next": "^16.3.4",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.11",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "^22.15.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "drizzle-kit": "^0.31.10",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.8.3"
+  }
+}
