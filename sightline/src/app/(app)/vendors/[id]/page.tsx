@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { requireUser } from "@/lib/auth";
-import { can, departmentScope } from "@/lib/rbac";
+import { can, departmentScope, ROLE_LABEL } from "@/lib/rbac";
 import {
   currentMonth,
   dormantSeats,
@@ -139,7 +139,7 @@ export default async function VendorPage({ params }: { params: Promise<{ id: str
         />
       </div>
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-3">
+      <div className="mb-4 grid items-start gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <CardHead title="Billing history" sub="Committed spend versus billed overage, trailing 24 months." />
           <div className="px-2 pb-3">
@@ -193,7 +193,7 @@ export default async function VendorPage({ params }: { params: Promise<{ id: str
         </Card>
       </div>
 
-      <div className="mb-4 grid gap-4 xl:grid-cols-3">
+      <div className="mb-4 grid items-start gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <CardHead title="Seats provisioned versus active" sub="Trailing 24 months." />
           <div className="px-2 pb-3">
@@ -247,7 +247,7 @@ export default async function VendorPage({ params }: { params: Promise<{ id: str
         </Card>
       </div>
 
-      <div className="grid gap-4 xl:grid-cols-3">
+      <div className="grid items-start gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <CardHead title="Invoices" sub="Most recent 12 billing periods." />
           <div className="tbl-scroll thin-scroll">
@@ -301,7 +301,7 @@ export default async function VendorPage({ params }: { params: Promise<{ id: str
                   <option value="">Unassigned</option>
                   {owners.map((owner) => (
                     <option key={owner.id} value={owner.id}>
-                      {owner.name} — {owner.role}
+                      {owner.name} — {ROLE_LABEL[owner.role as keyof typeof ROLE_LABEL]}
                     </option>
                   ))}
                 </select>
