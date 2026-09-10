@@ -101,10 +101,10 @@ currency value.
 | Concern | How it is handled |
 |---|---|
 | Password storage | scrypt, N=2¹⁷ r=8 p=1, per-password salt, constant-time comparison |
-| Account enumeration | Identical error text and comparable timing whether or not the account exists |
+| Account enumeration | Identical error text and comparable timing whether the account is missing, disabled or locked |
 | Brute force | Per-IP and per-email fixed-window rate limits, plus a 15-minute lockout after five consecutive failures |
 | Sessions | 32 bytes of CSPRNG entropy; only the SHA-256 hash is stored; `HttpOnly`, `SameSite=Lax`, `Secure` in production; 12-hour expiry that slides at most hourly |
-| CSRF | Double-submit token bound to the session by HMAC, plus an `Origin`/`Host` check on every mutation |
+| CSRF | Double-submit token bound to the session by HMAC, plus an `Origin`/`Host` check on every mutation. The token cookie is `HttpOnly` — forms receive the token from a server component, so no client script ever needs to read it |
 | Authorisation | Capability-based. Pages and actions ask `can(user, "seat.reclaim")`, never for a role name. Every mutation re-checks server-side and re-verifies that the target row belongs to the caller's tenant and department |
 | Tenant isolation | `orgId` is bound into every query; department owners additionally get a `departmentId` predicate |
 | Input validation | Zod schemas on every server action; unknown fields rejected, numbers bounded |
@@ -112,6 +112,7 @@ currency value.
 | XSS | React escaping; a strict CSP (`frame-ancestors 'none'`, `object-src 'none'`, no remote origins) set in `next.config.ts` |
 | CSV injection | Leading `=`, `+`, `-`, `@` neutralised before quoting in the export |
 | Privilege lockout | The last active administrator cannot be demoted or disabled |
+| Error surface | Server actions return fixed messages; unexpected failures are logged server-side rather than echoed to the client |
 | Auditability | Sign-ins, failures, rate-limit trips, exports and every data change are appended to `audit_log` with actor, entity and IP |
 
 `SIGHTLINE_SECRET` (32+ characters) signs CSRF tokens. Production refuses to start

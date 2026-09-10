@@ -34,7 +34,10 @@ async function guard<T>(formData: FormData, capability: Parameters<typeof assert
     if (error instanceof ForbiddenError) return { error: error.message };
     if (error instanceof z.ZodError) return { error: error.issues[0]?.message ?? "Check the form." };
     if (error instanceof Error && error.message.startsWith("NEXT_")) throw error;
-    return { error: error instanceof Error ? error.message : "Something went wrong." };
+    // Anything else is unexpected: log it server-side, and hand the client a
+    // fixed message so database or framework internals are never echoed back.
+    console.error("[sightline] action failed", error);
+    return { error: "That change could not be saved. Try again, or contact an administrator." };
   }
 }
 

@@ -58,7 +58,10 @@ export async function createSession(userId: string): Promise<void> {
     maxAge: SESSION_TTL_MS / 1000,
   });
   jar.set(CSRF_COOKIE, issueCsrfToken(sha256(raw)), {
-    httpOnly: false, // read by the form component to mint a hidden field
+    // Nothing on the client reads this: forms receive the token from a server
+    // component, so the cookie stays HttpOnly and the double-submit check is
+    // still an exact match plus an HMAC bound to the session.
+    httpOnly: true,
     sameSite: "lax",
     secure: process.env.NODE_ENV === "production",
     path: "/",
@@ -191,6 +194,11 @@ export async function assertCsrf(submitted: FormData | string | null): Promise<v
   }
 }
 
+/**
+ * Only meaningful behind a trusted reverse proxy that overwrites
+ * `x-forwarded-for`. Exposed directly, the header is client-controlled, so this
+ * value is recorded for investigation and never used as an authorisation input.
+ */
 export function clientIp(h: Headers): string | null {
   const forwarded = h.get("x-forwarded-for");
   if (forwarded) return forwarded.split(",")[0]!.trim().slice(0, 64);

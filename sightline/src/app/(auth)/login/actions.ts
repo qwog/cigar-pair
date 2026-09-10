@@ -52,23 +52,27 @@ export async function signIn(_prev: LoginState, formData: FormData): Promise<Log
     };
   }
 
-  const user = db.select().from(users).where(eq(users.email, email)).get();
-
   // Same generic message and comparable timing whether or not the account exists.
   const GENERIC = "That email and password combination is not recognised.";
+  const user = db.select().from(users).where(eq(users.email, email)).get();
 
   if (!user) {
     await dummyVerify();
     return { error: GENERIC, email };
   }
+  // Disabled and locked accounts return the same message as a wrong password, so
+  // the response never confirms that an address is registered. Repeated attempts
+  // still surface the rate-limit message above, which is identical for addresses
+  // that do not exist.
   if (user.status !== "active") {
     await dummyVerify();
-    return { error: "This account has been disabled. Contact your Sightline administrator.", email };
+    await audit.record({ id: user.id, email: user.email, orgId: user.orgId }, "auth.disabled_attempt", "user", user.id);
+    return { error: GENERIC, email };
   }
   if (user.lockedUntil && new Date(user.lockedUntil).getTime() > Date.now()) {
     await dummyVerify();
-    const minutes = Math.ceil((new Date(user.lockedUntil).getTime() - Date.now()) / 60000);
-    return { error: `Account temporarily locked. Try again in ${minutes} minute${minutes === 1 ? "" : "s"}.`, email };
+    await audit.record({ id: user.id, email: user.email, orgId: user.orgId }, "auth.locked_attempt", "user", user.id);
+    return { error: GENERIC, email };
   }
 
   const ok = await verifyPassword(password, user.passwordHash);
